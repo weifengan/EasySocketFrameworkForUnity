@@ -20,7 +20,7 @@ public class ClientDemo : MonoBehaviour {
 
     private EasyTCPClient client;
 
-    public Text txt;
+    private string msgStr = "";
 	// Use this for initialization
 	void Start () {
         client = EasyTCPClient.CreateClient("127.0.0.1", 9339);
@@ -31,7 +31,9 @@ public class ClientDemo : MonoBehaviour {
 
     private void ClientDemo_OnCallback(EasyTCPClient client, NetMessage msg)
     {
-        txt.text = txt.text + "\n" + msg.ReadUTFString();
+        //读取字符串
+        msgStr+= "\n"+msg.ReadUTFString();
+        
     }
 
     private void Client_OnSocketEventHandler(EasySocketEvent evt)
@@ -39,7 +41,10 @@ public class ClientDemo : MonoBehaviour {
         switch (evt.Type)
         {
             case EasySocketEvent.CONNECTED:
-                Debug.Log("connected to server");
+                msgStr+="\n connected to server";
+                break;
+            case EasySocketEvent.CONNECT_ERROR:
+                msgStr += "\n connect failed to server"+evt.Info;
                 break;
         }
     }
@@ -64,6 +69,9 @@ public class ClientDemo : MonoBehaviour {
             msg.WriteUTFString("我就客户端发来的消息");
             client.SendNetMessage(msg);
         }
+
+
+        GUI.Label(new Rect(140, 0, 800, 600), msgStr);
 
 
 

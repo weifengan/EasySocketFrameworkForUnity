@@ -20,7 +20,7 @@ public class ServerDemo : MonoBehaviour {
 
     private EasyTCPServer server;
 
-    public Text txt;
+    public string msgStr = "";
 	// Use this for initialization
 	void Start () {
         server = EasyTCPServer.CreateServer("127.0.0.1", 9339);
@@ -31,7 +31,7 @@ public class ServerDemo : MonoBehaviour {
 
     private void ClientDemo_OnCallback(EasyTCPToken client, NetMessage msg)
     {
-        txt.text = txt.text + "\n" + msg.ReadUTFString();
+        msgStr+="\n" + msg.ReadUTFString();
     }
 
     private void Client_OnSocketEventHandler(EasySocketEvent evt)
@@ -39,13 +39,13 @@ public class ServerDemo : MonoBehaviour {
         switch (evt.Type)
         {
             case EasySocketEvent.SERVER_START_SUCCESS:
-                Debug.Log("server start success");
+                msgStr += "\nserver start success";
                 break;
             case EasySocketEvent.NEW_CONNECTION:
-                Debug.Log("new client connected");
+                msgStr += "\nnew client connected";
                 break;
             case EasySocketEvent.DISCONNECTED:
-                Debug.Log("client lost" + evt.UserToken.Ipe.ToString());
+                msgStr += "\nclient lost" + evt.UserToken.Ipe.ToString();
                 break;
         }
     }
@@ -68,6 +68,7 @@ public class ServerDemo : MonoBehaviour {
             server.BroadcastNetMessage(msg);
         }
 
+        GUI.Label(new Rect(140, 0, 800, 600), msgStr);
 
 
     }
