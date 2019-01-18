@@ -39,13 +39,16 @@ public class ServerDemo : MonoBehaviour {
         switch (evt.Type)
         {
             case EasySocketEvent.SERVER_START_SUCCESS:
-                msgStr += "\nserver start success";
+                msgStr += "\nserver start success"+evt.Target;
                 break;
             case EasySocketEvent.NEW_CONNECTION:
-                msgStr += "\nnew client connected";
+                msgStr += "\nnew client connected"+evt.UserToken.Ipe;
                 break;
             case EasySocketEvent.DISCONNECTED:
                 msgStr += "\nclient lost" + evt.UserToken.Ipe.ToString();
+                break;
+            case EasySocketEvent.SERVER_SHUTDOWN:
+                msgStr += "\nserver Shutdown";
                 break;
         }
     }
@@ -61,7 +64,12 @@ public class ServerDemo : MonoBehaviour {
         {
             server.StartServer();
         }
-        if (GUI.Button(new Rect(0, 30, 120, 30), "发送消息"))
+
+        if (GUI.Button(new Rect(0, 30, 120, 30), "关闭服务器"))
+        {
+            server.StopServer();
+        }
+        if (GUI.Button(new Rect(0, 60, 120, 30), "发送消息"))
         {
             NetMessage msg = new NetMessage(1);
             msg.WriteUTFString("我就服务器端发来的消息Server");

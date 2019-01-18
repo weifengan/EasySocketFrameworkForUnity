@@ -56,12 +56,14 @@ namespace com.felixwee.easysocket.events
         public NetMessage SocketData;
         public string Info;
         public object[] Parameters;
+        public object Target;
         ///服务器端
         public EasySocketEvent(string type, EasyTCPServer server, string msg = "")
         {
             this.Type = type;
             this.Server = server;
             this.Info = msg;
+            this.Target = server;
         }
 
         //客户端
@@ -70,6 +72,7 @@ namespace com.felixwee.easysocket.events
             this.Type = type;
             this.Client = client;
             this.SocketData = msg;
+            this.Target = client;
         }
 
         public EasySocketEvent(string type, EasyTCPClient client, string msg = "")
@@ -77,6 +80,7 @@ namespace com.felixwee.easysocket.events
             this.Type = type;
             this.Client = client;
             this.Info = msg;
+            this.Target = client;
         }
 
         public EasySocketEvent(string type, EasyTCPToken token, NetMessage msg)
@@ -84,6 +88,7 @@ namespace com.felixwee.easysocket.events
             this.Type = type;
             this.UserToken = token;
             this.SocketData = msg;
+            this.Target = token;
         }
 
 
@@ -92,6 +97,7 @@ namespace com.felixwee.easysocket.events
             this.Type = type;
             this.UserToken = token;
             this.Info = msg;
+            this.Target = token;
         }
 
 
@@ -100,6 +106,7 @@ namespace com.felixwee.easysocket.events
             this.Type = type;
             this.UserToken = token;
             this.Parameters = parameters;
+            this.Target = token;
         }
 
     }

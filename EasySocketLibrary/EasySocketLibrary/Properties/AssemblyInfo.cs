@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("EasySocketLibraray")]
+[assembly: AssemblyTitle("EasySocketLibrary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EasySocketLibraray")]
+[assembly: AssemblyProduct("EasySocketLibrary")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("d3975737-1e6b-4547-a5a2-76a76f9b7a4e")]
+[assembly: Guid("bedefe93-cfb0-4bc3-8505-75bc8faf923b")]
 
 // 程序集的版本信息由下列四个值组成: 
 //

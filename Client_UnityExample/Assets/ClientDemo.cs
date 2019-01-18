@@ -23,7 +23,7 @@ public class ClientDemo : MonoBehaviour {
     private string msgStr = "";
 	// Use this for initialization
 	void Start () {
-        client = EasyTCPClient.CreateClient("127.0.0.1", 9339);
+        client = EasyTCPClient.CreateClient("127.0.0.1", 9339,true);
         client.OnSocketEventHandler += Client_OnSocketEventHandler;
         client.msgMgr.AddMsgId(1);
         client.msgMgr.FindHandlerById(1).OnCallback += ClientDemo_OnCallback;
@@ -46,6 +46,9 @@ public class ClientDemo : MonoBehaviour {
             case EasySocketEvent.CONNECT_ERROR:
                 msgStr += "\n connect failed to server"+evt.Info;
                 break;
+            case EasySocketEvent.DISCONNECTED:
+                msgStr += "\n 掉线了";
+                break;
         }
     }
 
@@ -58,10 +61,7 @@ public class ClientDemo : MonoBehaviour {
     {
         if(GUI.Button(new Rect(0, 0, 120, 30), "连接"))
         {
-            if (!client._isOnline)
-            {
-                client.StartConnect();
-            }
+           client.StartConnect(true);
         }
         if (GUI.Button(new Rect(0, 30, 120, 30), "发送消息"))
         {

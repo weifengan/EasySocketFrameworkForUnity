@@ -312,5 +312,11 @@ namespace com.felixwee.easysocket
                 EasySocket.LogWarning(args);
             }
         }
+
+        public override string ToString()
+        {
+
+            return this.GetType().Name + "  HOST:" + _host + "  PORT:" + _port;
+        }
     }
 }

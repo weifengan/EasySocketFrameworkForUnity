@@ -70,7 +70,7 @@ namespace com.felixwee.easysocket
         private Queue<EasySocketEvent> _socketEventQueue = new Queue<EasySocketEvent>();
         #endregion
 
-        
+
         public static EasyTCPClient CreateClient(string host = "127.0.0.1", int port = 9339, bool debug = false)
         {
             GameObject go = new GameObject("[TCPClinet]" + host + ":" + port);
@@ -79,16 +79,22 @@ namespace com.felixwee.easysocket
             client._host = host;
             client._port = port;
             client._debug = debug;
-            client.msgMgr = new S2CMsgManager("[MSG]"+ host + ":" + port);
+            client.msgMgr = new S2CMsgManager("[MSG]" + host + ":" + port);
             client._socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             client._lastHeartBeatTime = System.DateTime.Now;
             return client;
         }
 
-
-        public void StartConnect(bool autoReconnect = true)
+        /// <summary>
+        /// 开始连接服务器
+        /// </summary>
+        /// <param name="autoReconnect">掉线后是否自动重连</param>
+        public void StartConnect(bool autoReconnect = false)
         {
             this._autoReconnect = autoReconnect;
+            _isOnline = false;
+            _receiveLoop = false;
+            _heartbeatLoop = false;
 
             InitNetworkt();
         }
@@ -126,6 +132,9 @@ namespace com.felixwee.easysocket
                 _onlineCheckThread.IsBackground = true;
                 _onlineCheckThread.Start();
 
+                //更新最后一次心跳包时间
+                _lastHeartBeatTime = System.DateTime.Now;
+
             }
             catch (Exception ex)
             {
@@ -133,6 +142,8 @@ namespace com.felixwee.easysocket
                 _socketEventQueue.Enqueue(nse);
                 _isOnline = false;
                 _onlinecheckLoop = false;
+                //更新最后一次心跳包时间
+                _lastHeartBeatTime = System.DateTime.Now;
                 if (_autoReconnect)
                 {
                     LogError("5秒后将再次尝试连接服务器!     原因:" + nse.Info);
@@ -181,19 +192,12 @@ namespace com.felixwee.easysocket
                     }
                     else
                     {
-                        EasySocketEvent nse = new EasySocketEvent(EasySocketEvent.DISCONNECTED, this, "服务器端主动关闭了此链接!");
-                        _socketEventQueue.Enqueue(nse);
                         _receiveLoop = false;
                         _heartbeatLoop = false;
                         _onlinecheckLoop = false;
-
-                        if (_autoReconnect)
-                        {
-                            LogError("连接服务器" + _host + ":" + _port + "失败,5秒后将再次尝试连接服务器!     原因:" + nse.Info);
-                            //重连服务器
-                            StartCoroutine(StartReconnectHandler());
-                        }
-
+                        _isOnline = false;
+                        EasySocketEvent nse = new EasySocketEvent(EasySocketEvent.DISCONNECTED, this, "服务器端主动关闭了此链接!");
+                        _socketEventQueue.Enqueue(nse);
                     }
                 }
                 catch (SocketException se)
@@ -203,6 +207,7 @@ namespace com.felixwee.easysocket
                     _receiveLoop = false;
                     _heartbeatLoop = false;
                     _onlinecheckLoop = false;
+                    _isOnline = false;
                 }
                 catch (Exception ex)
                 {
@@ -212,6 +217,7 @@ namespace com.felixwee.easysocket
                     _receiveLoop = false;
                     _heartbeatLoop = false;
                     _onlinecheckLoop = false;
+                    _isOnline = false;
                 }
             }
         }
@@ -235,7 +241,6 @@ namespace com.felixwee.easysocket
 
         void Update()
         {
-
             //网络事件
             while (_socketEventQueue.Count > 0)
             {
@@ -352,6 +357,9 @@ namespace com.felixwee.easysocket
                 if (sp.Seconds > 15)
                 {
                     _onlinecheckLoop = false;
+                    _receiveLoop = false;
+                    _heartbeatLoop = false;
+                    _isOnline = false;
                     EasySocketEvent ese = new EasySocketEvent(EasySocketEvent.DISCONNECTED, this, "因长时间未收到心跳包而断开网络连接");
                     _socketEventQueue.Enqueue(ese);
                 }
@@ -374,13 +382,16 @@ namespace com.felixwee.easysocket
                 try
                 {
                     _socket.Send(msg.Bytes);
-
                     EasySocketEvent nse = new EasySocketEvent(EasySocketEvent.DATA_SENDED, this, msg);
                     _socketEventQueue.Enqueue(nse);
                     bytesSended += msg.Bytes.Length;
                 }
                 catch (SocketException se)
                 {
+                    _onlinecheckLoop = false;
+                    _receiveLoop = false;
+                    _heartbeatLoop = false;
+                    _isOnline = false;
                     EasySocketEvent nse = new EasySocketEvent(EasySocketEvent.DISCONNECTED, this, se.Message);
                     _socketEventQueue.Enqueue(nse);
                 }
