@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\Server_UnityExample\Assets\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -53,6 +53,7 @@
     <Compile Include="com\felixwee\easysocket\msg\S2CMsgHandler.cs" />
     <Compile Include="com\felixwee\easysocket\msg\S2CMsgManager.cs" />
     <Compile Include="com\felixwee\easysocket\msg\TextMessage.cs" />
+    <Compile Include="com\felixwee\easysocket\EasyUDPServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

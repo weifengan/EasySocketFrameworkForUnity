@@ -53,6 +53,7 @@ namespace com.felixwee.easysocket.events
         public EasyTCPToken UserToken;
         public EasyTCPClient Client;
         public EasyTCPServer Server;
+        public EasyUDPServer UdpServer;
         public NetMessage SocketData;
         public string Info;
         public object[] Parameters;
@@ -109,5 +110,21 @@ namespace com.felixwee.easysocket.events
             this.Target = token;
         }
 
+
+        public EasySocketEvent(string type, EasyUDPServer server, string msg = "")
+        {
+            this.Type = type;
+            this.UdpServer = server;
+            this.Info = msg;
+            this.Target = server;
+        }
+
+        public EasySocketEvent(string type, EasyUDPServer server, NetMessage msg)
+        {
+            this.Type = type;
+            this.UdpServer = server;
+            this.SocketData = msg;
+            this.Target = server;
+        }
     }
 }

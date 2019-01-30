@@ -96,11 +96,11 @@ namespace com.felixwee.easysocket
             _receiveLoop = false;
             _heartbeatLoop = false;
 
-            InitNetworkt();
+            InitNetwork();
         }
 
 
-        public void InitNetworkt()
+        public void InitNetwork()
         {
             try
             {
@@ -162,7 +162,7 @@ namespace com.felixwee.easysocket
         {
             yield return new WaitForSeconds(5);
             _lastHeartBeatTime = System.DateTime.Now;
-            InitNetworkt();
+            InitNetwork();
         }
 
 

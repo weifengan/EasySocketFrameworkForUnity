@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\EasySocketTools.cs" />
      <Compile Include="Assets\ServerDemo.cs" />
+     <Compile Include="Assets\UDPServerDemo.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity201731f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -118,6 +120,9 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>D:/Program Files/Unity201731f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="EasySocketLibrary">
+ <HintPath>E:/Github_Repository/EasySocketFrameworkForUnity/Server_UnityExample/Assets/Plugins/EasySocketLibrary.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/Users/slove/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
@@ -138,9 +143,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/Users/slove/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="EasySocketLibrary">
- <HintPath>E:/Github_Repository/EasySocketFrameworkForUnity/Server_UnityExample/Assets/Plugins/EasySocketLibrary.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
